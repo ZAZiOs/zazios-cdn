@@ -1,0 +1,21 @@
+{
+  "name": "zazios-cdn",
+  "version": "1.0.0",
+  "description": "CDN for ZAZiOs projects",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon . -e .js"
+  },
+  "keywords": [],
+  "author": "ZAZiOs",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-fileupload": "^1.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.7"
+  }
+}
