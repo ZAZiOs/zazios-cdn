@@ -43,7 +43,21 @@ app.post('/upload', async (req, res) => {
 })
 
 app.delete('/delete', async (req, res) => {
-    
+    try {
+        const token = checkJWT(req.query.token)
+        if (!token) return res.status(403).json({code: 403, message: "Token verification failed"})
+        const {project, filepath} = token
+        if (!project || !filepath) return res.status(400).json({code: 400, message: "Not enough data."})
+        if (project == 'upload') return res.status(400).json({code: 400, message: "Project name can't be 'upload'"})
+        let file = `server/${project}/${filepath}`
+        console.log(file)
+        if (!fs.existsSync(file)) return res.status(404).json({code: 404, message: "File not found on server"})
+        fs.unlinkSync(file)
+        return res.status(200).json({msg: "Success"})
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({error: "Error occured."})
+    }
 })
 
 app.get('/', async (req, res) => {
@@ -85,6 +99,6 @@ app.get('/list/*', async (req, res) => {
 
 app.get('/upload/*', r => r.res.status(400).json({code: 404, message: "Project name can't be 'upload'"}))
 app.get('*', r => r.res.status(404).json({code: 404, message: "File not found"}))
-app.listen(process.env.port, () => {
-    console.log(`Server started.\nhttp://localhost:${process.env.port}/`)
+app.listen(process.env.PORT, () => {
+    console.log(`Server started.\nhttp://localhost:${process.env.PORT}/`)
 })
